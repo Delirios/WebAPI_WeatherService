@@ -8,9 +8,7 @@ namespace WeatherService.Controllers
     {
         [HttpGet]
         public IActionResult  GetWeather()
-        
         {
-            return Ok(new {Moniker = "123123123", Name = "sadasdsa"});
         }
     }
 }

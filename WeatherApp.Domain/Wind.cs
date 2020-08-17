@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WeatherApp.Domain
 {
-    class Wind
+    public class Wind
     {
         public double speed { get; set; }
         public int deg { get; set; }

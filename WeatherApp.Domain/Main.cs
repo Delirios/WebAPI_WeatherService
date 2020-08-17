@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WeatherApp.Domain
 {
-    class Main
+    public class Main
     {
         public double temp { get; set; }
         public double feels_like { get; set; }
