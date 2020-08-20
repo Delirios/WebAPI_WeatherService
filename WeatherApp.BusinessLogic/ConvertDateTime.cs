@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WeatherApp.Infrastructure
+namespace WeatherApp.BusinessLogic
 {
     public class ConvertDateTime
     {

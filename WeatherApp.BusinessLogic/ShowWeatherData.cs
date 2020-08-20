@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using WeatherApp.Domain;
 
-namespace WeatherApp.Infrastructure
+namespace WeatherApp.BusinessLogic
 {
     public class ShowWeatherData
     {
         public async Task<string> ShowDataAsync(string CityName)
         {
-            string api_key = "d59f2794ce9666f810bad9ece5322791";
+            string api_key = ""; // your api_key from the http://api.openweathermap.org
             string units = "metric";
             string lang = "ua";
             string url = "http://api.openweathermap.org/data/2.5/weather?q="

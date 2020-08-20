@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using WeatherApp.Domain;
 
-namespace WeatherApp.Infrastructure
+namespace WeatherApp.BusinessLogic
 {
     public class GetWeatherData
     {

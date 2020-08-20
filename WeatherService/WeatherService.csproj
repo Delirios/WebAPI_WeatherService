@@ -5,8 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WeatherApp.Domain\WeatherApp.Domain.csproj" />
-    <ProjectReference Include="..\WeatherApp.Infrastructure\WeatherApp.Infrastructure.csproj" />
+    <ProjectReference Include="..\WeatherApp.BusinessLogic\WeatherApp.BusinessLogic.csproj" />
   </ItemGroup>
 
 
