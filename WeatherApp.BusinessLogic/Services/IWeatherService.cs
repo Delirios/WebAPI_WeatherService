@@ -8,15 +8,9 @@ namespace WeatherApp.BusinessLogic.Services
 {
     public interface IWeatherService 
     {
-        /// <summary>
-        /// Get weatherinfo from http://api.openweathermap.org
-        /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
-        Task<Root> GetWeatherDataAsync(string url);
-        
-        Task<string> ShowWeatherDataAsync(string CityName);
 
+
+        Task<string> ShowWeatherDataAsync(string CityName);
 
     }
 }

@@ -14,9 +14,7 @@ namespace WeatherApp.BusinessLogic.Services
     {
         public async Task<Root> GetWeatherDataAsync(string url)
         {
-            
-
-                WebRequest webRequest = WebRequest.Create(url);
+            WebRequest webRequest = WebRequest.Create(url);
                 WebResponse webResponse = await webRequest.GetResponseAsync();
                 using (Stream stream = webResponse.GetResponseStream())
                 {
@@ -26,21 +24,19 @@ namespace WeatherApp.BusinessLogic.Services
                     Root result = JsonConvert.DeserializeObject<Root>(responceFromServer);
                     return result;
                 }
-
         }
 
         public async Task<string> ShowWeatherDataAsync(string CityName)
         {
-            string api_key = "";  // your api_key from the http://api.openweathermap.org
+            string api_key = "d59f2794ce9666f810bad9ece5322791";  // your api_key from the http://api.openweathermap.org
             string units = "metric";
             string lang = "ua";
             string url = "http://api.openweathermap.org/data/2.5/weather?q="
                          + CityName + "&appid=" + api_key + "&units=" + units + "&lang=" + lang;
 
-            GetWeatherData getWeather = new GetWeatherData();
             Root root = new Root();
             {
-                root = await getWeather.GetWeatherDataAsync(url);
+                root = await GetWeatherDataAsync(url);
                 var listWeather = root.weather.Select(p => p.description);
                 string weatherDescription = "";
                 foreach (var item in listWeather)
