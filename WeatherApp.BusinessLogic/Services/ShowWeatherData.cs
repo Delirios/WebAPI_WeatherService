@@ -13,7 +13,7 @@ namespace WeatherApp.BusinessLogic
     {
         public async Task<string> ShowDataAsync(string CityName)
         {
-            string api_key = ""; // your api_key from the http://api.openweathermap.org
+            string api_key = "";  // your api_key from the http://api.openweathermap.org
             string units = "metric";
             string lang = "ua";
             string url = "http://api.openweathermap.org/data/2.5/weather?q="
