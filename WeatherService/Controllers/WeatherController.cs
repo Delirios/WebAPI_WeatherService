@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WeatherApp.BusinessLogic;
+using WeatherApp.BusinessLogic.Services;
 
 namespace WeatherService.Controllers
 {
@@ -13,13 +14,22 @@ namespace WeatherService.Controllers
     [Route("api/[controller]")]
     public class WeatherController : ControllerBase
     {
+        private IWeatherService _service;
+
+        public WeatherController(IWeatherService service)
+        {
+            _service = service;
+        }
+
+
         [HttpGet("{cityName}")]
         public async Task<ActionResult<string>> GetWeather(string cityName)
         {
+            
             try
             {
-                ShowWeatherData showWeatherData = new ShowWeatherData();
-                var result = await showWeatherData.ShowDataAsync(cityName);
+                var result = await _service.ShowWeatherDataAsync(cityName);
+                //var result = await showWeatherData.ShowDataAsync(cityName);
 
                 return result;
             }

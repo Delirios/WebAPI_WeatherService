@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using WeatherApp.BusinessLogic;
+using WeatherApp.BusinessLogic.Services;
 
 namespace WeatherService
 {
@@ -17,6 +19,7 @@ namespace WeatherService
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
         }
 
         public IConfiguration Configuration { get; }
@@ -25,6 +28,7 @@ namespace WeatherService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddTransient<IWeatherService, WeatherApp.BusinessLogic.Services.WeatherService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -10,7 +10,7 @@ using WeatherApp.Domain;
 
 namespace WeatherApp.BusinessLogic.Services
 {
-    class WeatherService : IWeatherService<Root>
+    public class WeatherService : IWeatherService
     {
         public async Task<Root> GetWeatherDataAsync(string url)
         {
