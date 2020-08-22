@@ -8,6 +8,15 @@ namespace WeatherApp.DataAccessLayer
 {
     public class WeatherContext : DbContext
     {
+        public WeatherContext(DbContextOptions<WeatherContext> options) : base(options)
+        {
+        }
+
+        //private static DbContextOptions GetOptions(string connectionString)
+        //{
+        //    return SqlServerDbContextOptionsExtensions.UseSqlServer(new DbContextOptionsBuilder(), connectionString).Options;
+        //}
+
         public DbSet<Main> Mains { get; set; }
         public DbSet<Root> Roots { get; set; }
         public DbSet<Domain.System> Systems { get; set; }
