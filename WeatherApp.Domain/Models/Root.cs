@@ -14,7 +14,7 @@ namespace WeatherApp.Domain
         public Wind wind { get; set; }
         [JsonProperty("dt")]
         public int datetime { get; set; }
-        public Sys sys { get; set; }
+        public System sys { get; set; }
         public int timezone { get; set; }
         [JsonProperty("name")]
         public string cityname { get; set; }

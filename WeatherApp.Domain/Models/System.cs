@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace WeatherApp.Domain
 {
-    public class Sys
+    public class System
     {
         public int id { get; set; }
         public int type { get; set; }
