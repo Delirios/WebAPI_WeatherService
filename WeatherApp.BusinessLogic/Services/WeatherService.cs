@@ -5,13 +5,25 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using WeatherApp.DataAccessLayer;
 using WeatherApp.Domain;
 
 namespace WeatherApp.BusinessLogic.Services
 {
     public class WeatherService : IWeatherService
     {
+
+        private readonly WeatherContext _context;
+
+        public WeatherService(WeatherContext context)
+        {
+            _context = context;
+        }
+
         public async Task<Root> GetWeatherDataAsync(string url)
         {
             WebRequest webRequest = WebRequest.Create(url);
@@ -22,6 +34,13 @@ namespace WeatherApp.BusinessLogic.Services
 
                     string responceFromServer = await reader.ReadToEndAsync();
                     Root result = JsonConvert.DeserializeObject<Root>(responceFromServer);
+                    
+                    //Bug here
+                    using (_context)
+                    {
+                        _context.Roots.Add(result);
+                        _context.SaveChanges();
+                    }
                     return result;
                 }
         }

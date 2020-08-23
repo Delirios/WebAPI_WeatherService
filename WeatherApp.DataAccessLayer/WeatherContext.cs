@@ -8,14 +8,17 @@ namespace WeatherApp.DataAccessLayer
 {
     public class WeatherContext : DbContext
     {
+
         public WeatherContext(DbContextOptions<WeatherContext> options) : base(options)
         {
         }
+
 
         //private static DbContextOptions GetOptions(string connectionString)
         //{
         //    return SqlServerDbContextOptionsExtensions.UseSqlServer(new DbContextOptionsBuilder(), connectionString).Options;
         //}
+
 
         public DbSet<Main> Mains { get; set; }
         public DbSet<Root> Roots { get; set; }
@@ -26,6 +29,7 @@ namespace WeatherApp.DataAccessLayer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             //Write Fluent API configurations here
 
             //Property Configurations

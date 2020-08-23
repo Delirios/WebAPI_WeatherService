@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WeatherApp.DataAccessLayer\WeatherApp.DataAccessLayer.csproj" />
     <ProjectReference Include="..\WeatherApp.Domain\WeatherApp.Domain.csproj" />
   </ItemGroup>
 

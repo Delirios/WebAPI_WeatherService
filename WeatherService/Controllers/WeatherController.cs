@@ -28,6 +28,7 @@ namespace WeatherService.Controllers
             
             try
             {
+
                 var result = await _service.ShowWeatherDataAsync(cityName);
                 //var result = await showWeatherData.ShowDataAsync(cityName);
 

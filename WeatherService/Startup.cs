@@ -36,13 +36,13 @@ namespace WeatherService
                 x => x.MigrationsAssembly("WeatherService"));
         });
         }
-        public class ApplicationDbContext : DbContext
-        {
-            public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-                : base(options)
-            {
-            }
-        }
+        //public class ApplicationDbContext : DbContext
+        //{
+        //    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        //        : base(options)
+        //    {
+        //    }
+        //}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
