@@ -10,8 +10,9 @@ namespace WeatherApp.Domain
     public class System
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int id { get; set; }
+        public int Id { get; set; }
+        [JsonProperty("id")]
+        public int internal_parameter { get; set; }
         public int type { get; set; }
         public double message { get; set; }
         public string country { get; set; }

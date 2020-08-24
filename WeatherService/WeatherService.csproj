@@ -17,5 +17,9 @@
     <ProjectReference Include="..\WeatherApp.DataAccessLayer\WeatherApp.DataAccessLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 
 </Project>

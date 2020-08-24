@@ -10,8 +10,8 @@ using WeatherApp.DataAccessLayer;
 namespace WeatherService.Migrations
 {
     [DbContext(typeof(WeatherContext))]
-    [Migration("20200822191758_Init")]
-    partial class Init
+    [Migration("20200824145627_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,39 @@ namespace WeatherService.Migrations
                 .HasAnnotation("ProductVersion", "3.1.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("WeatherApp.Domain.Clouds", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("cloudiness")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Clouds");
+                });
+
+            modelBuilder.Entity("WeatherApp.Domain.Coordinates", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("lat")
+                        .HasColumnType("float");
+
+                    b.Property<double>("lon")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Coordinates");
+                });
 
             modelBuilder.Entity("WeatherApp.Domain.Main", b =>
                 {
@@ -53,24 +86,33 @@ namespace WeatherService.Migrations
 
             modelBuilder.Entity("WeatherApp.Domain.Root", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("city_Id")
+                        .HasColumnType("int");
+
                     b.Property<string>("cityname")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("datetime")
+                    b.Property<int?>("cloudsId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("coordinatesId")
                         .HasColumnType("int");
 
                     b.Property<int?>("mainId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("sysid")
+                    b.Property<int?>("systemId")
                         .HasColumnType("int");
 
                     b.Property<int>("timezone")
+                        .HasColumnType("int");
+
+                    b.Property<int>("update_time")
                         .HasColumnType("int");
 
                     b.Property<int>("visibility")
@@ -79,11 +121,15 @@ namespace WeatherService.Migrations
                     b.Property<int?>("windId")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
+
+                    b.HasIndex("cloudsId");
+
+                    b.HasIndex("coordinatesId");
 
                     b.HasIndex("mainId");
 
-                    b.HasIndex("sysid");
+                    b.HasIndex("systemId");
 
                     b.HasIndex("windId");
 
@@ -92,13 +138,16 @@ namespace WeatherService.Migrations
 
             modelBuilder.Entity("WeatherApp.Domain.System", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("country")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("internal_parameter")
+                        .HasColumnType("int");
 
                     b.Property<double>("message")
                         .HasColumnType("float");
@@ -112,7 +161,7 @@ namespace WeatherService.Migrations
                     b.Property<int>("type")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Systems");
                 });
@@ -124,16 +173,11 @@ namespace WeatherService.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("Rootid")
+                    b.Property<int?>("RootId")
                         .HasColumnType("int");
 
                     b.Property<int>("condition")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("date")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getdate()");
 
                     b.Property<string>("description")
                         .HasColumnType("nvarchar(max)");
@@ -144,9 +188,14 @@ namespace WeatherService.Migrations
                     b.Property<string>("main")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("request_date")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
+
                     b.HasKey("weather_Id");
 
-                    b.HasIndex("Rootid");
+                    b.HasIndex("RootId");
 
                     b.ToTable("Weathers");
                 });
@@ -171,13 +220,21 @@ namespace WeatherService.Migrations
 
             modelBuilder.Entity("WeatherApp.Domain.Root", b =>
                 {
+                    b.HasOne("WeatherApp.Domain.Clouds", "clouds")
+                        .WithMany()
+                        .HasForeignKey("cloudsId");
+
+                    b.HasOne("WeatherApp.Domain.Coordinates", "coordinates")
+                        .WithMany()
+                        .HasForeignKey("coordinatesId");
+
                     b.HasOne("WeatherApp.Domain.Main", "main")
                         .WithMany()
                         .HasForeignKey("mainId");
 
-                    b.HasOne("WeatherApp.Domain.System", "sys")
+                    b.HasOne("WeatherApp.Domain.System", "system")
                         .WithMany()
-                        .HasForeignKey("sysid");
+                        .HasForeignKey("systemId");
 
                     b.HasOne("WeatherApp.Domain.Wind", "wind")
                         .WithMany()
@@ -188,7 +245,7 @@ namespace WeatherService.Migrations
                 {
                     b.HasOne("WeatherApp.Domain.Root", null)
                         .WithMany("weather")
-                        .HasForeignKey("Rootid");
+                        .HasForeignKey("RootId");
                 });
 #pragma warning restore 612, 618
         }

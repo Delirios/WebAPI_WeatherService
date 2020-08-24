@@ -19,7 +19,8 @@ namespace WeatherApp.DataAccessLayer
         //    return SqlServerDbContextOptionsExtensions.UseSqlServer(new DbContextOptionsBuilder(), connectionString).Options;
         //}
 
-
+        public  DbSet<Clouds> Clouds { get; set; }
+        public DbSet<Coordinates> Coordinates { get; set; }
         public DbSet<Main> Mains { get; set; }
         public DbSet<Root> Roots { get; set; }
         public DbSet<Domain.System> Systems { get; set; }
@@ -34,7 +35,7 @@ namespace WeatherApp.DataAccessLayer
 
             //Property Configurations
             modelBuilder.Entity<Weather>()
-                .Property(w => w.date)
+                .Property(w => w.request_date)
                 .HasDefaultValueSql("getdate()");
         }
     }

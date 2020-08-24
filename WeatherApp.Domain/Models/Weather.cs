@@ -15,6 +15,6 @@ namespace WeatherApp.Domain
         public string main { get; set; }
         public string description { get; set; }
         public string icon { get; set; }
-        public DateTime date { get; set; }
+        public DateTime request_date { get; set; }
     }
 }

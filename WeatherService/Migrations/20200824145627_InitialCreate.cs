@@ -3,10 +3,37 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WeatherService.Migrations
 {
-    public partial class Init : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Clouds",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    cloudiness = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Clouds", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Coordinates",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    lon = table.Column<double>(nullable: false),
+                    lat = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Coordinates", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Mains",
                 columns: table => new
@@ -29,8 +56,9 @@ namespace WeatherService.Migrations
                 name: "Systems",
                 columns: table => new
                 {
-                    id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    internal_parameter = table.Column<int>(nullable: false),
                     type = table.Column<int>(nullable: false),
                     message = table.Column<double>(nullable: false),
                     country = table.Column<string>(nullable: true),
@@ -39,7 +67,7 @@ namespace WeatherService.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Systems", x => x.id);
+                    table.PrimaryKey("PK_Systems", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -60,19 +88,34 @@ namespace WeatherService.Migrations
                 name: "Roots",
                 columns: table => new
                 {
-                    id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    city_Id = table.Column<int>(nullable: false),
+                    cloudsId = table.Column<int>(nullable: true),
+                    coordinatesId = table.Column<int>(nullable: true),
                     mainId = table.Column<int>(nullable: true),
                     visibility = table.Column<int>(nullable: false),
                     windId = table.Column<int>(nullable: true),
-                    datetime = table.Column<int>(nullable: false),
-                    sysid = table.Column<int>(nullable: true),
+                    update_time = table.Column<int>(nullable: false),
+                    systemId = table.Column<int>(nullable: true),
                     timezone = table.Column<int>(nullable: false),
                     cityname = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Roots", x => x.id);
+                    table.PrimaryKey("PK_Roots", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Roots_Clouds_cloudsId",
+                        column: x => x.cloudsId,
+                        principalTable: "Clouds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Roots_Coordinates_coordinatesId",
+                        column: x => x.coordinatesId,
+                        principalTable: "Coordinates",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Roots_Mains_mainId",
                         column: x => x.mainId,
@@ -80,10 +123,10 @@ namespace WeatherService.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Roots_Systems_sysid",
-                        column: x => x.sysid,
+                        name: "FK_Roots_Systems_systemId",
+                        column: x => x.systemId,
                         principalTable: "Systems",
-                        principalColumn: "id",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Roots_Winds_windId",
@@ -103,19 +146,29 @@ namespace WeatherService.Migrations
                     main = table.Column<string>(nullable: true),
                     description = table.Column<string>(nullable: true),
                     icon = table.Column<string>(nullable: true),
-                    date = table.Column<DateTime>(nullable: false, defaultValueSql: "getdate()"),
-                    Rootid = table.Column<int>(nullable: true)
+                    request_date = table.Column<DateTime>(nullable: false, defaultValueSql: "getdate()"),
+                    RootId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Weathers", x => x.weather_Id);
                     table.ForeignKey(
-                        name: "FK_Weathers_Roots_Rootid",
-                        column: x => x.Rootid,
+                        name: "FK_Weathers_Roots_RootId",
+                        column: x => x.RootId,
                         principalTable: "Roots",
-                        principalColumn: "id",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Roots_cloudsId",
+                table: "Roots",
+                column: "cloudsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Roots_coordinatesId",
+                table: "Roots",
+                column: "coordinatesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Roots_mainId",
@@ -123,9 +176,9 @@ namespace WeatherService.Migrations
                 column: "mainId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Roots_sysid",
+                name: "IX_Roots_systemId",
                 table: "Roots",
-                column: "sysid");
+                column: "systemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Roots_windId",
@@ -133,9 +186,9 @@ namespace WeatherService.Migrations
                 column: "windId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Weathers_Rootid",
+                name: "IX_Weathers_RootId",
                 table: "Weathers",
-                column: "Rootid");
+                column: "RootId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -145,6 +198,12 @@ namespace WeatherService.Migrations
 
             migrationBuilder.DropTable(
                 name: "Roots");
+
+            migrationBuilder.DropTable(
+                name: "Clouds");
+
+            migrationBuilder.DropTable(
+                name: "Coordinates");
 
             migrationBuilder.DropTable(
                 name: "Mains");

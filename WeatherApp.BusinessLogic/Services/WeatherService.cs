@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -34,13 +35,23 @@ namespace WeatherApp.BusinessLogic.Services
 
                     string responceFromServer = await reader.ReadToEndAsync();
                     Root result = JsonConvert.DeserializeObject<Root>(responceFromServer);
-                    
                     //Bug here
-                    using (_context)
+                    try
                     {
-                        _context.Roots.Add(result);
-                        _context.SaveChanges();
+                        using (_context)
+                        {
+                            _context.Roots.Add(result);
+                            _context.SaveChanges();
+                        }
                     }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine("asdsadasdaddsadassaaaaaaaaaaaaaaaaa");
+                        Debug.WriteLine(e);
+
+                    }
+
+
                     return result;
                 }
         }
@@ -64,8 +75,8 @@ namespace WeatherApp.BusinessLogic.Services
                 }
 
                 ConvertDateTime convertDateTime = new ConvertDateTime();
-                var sunriseTime = convertDateTime.ConvertFromUnixTimestamp(root.sys.sunrise).ToLocalTime();
-                var sunsetTime = convertDateTime.ConvertFromUnixTimestamp(root.sys.sunset).ToLocalTime();
+                var sunriseTime = convertDateTime.ConvertFromUnixTimestamp(root.system.sunrise).ToLocalTime();
+                var sunsetTime = convertDateTime.ConvertFromUnixTimestamp(root.system.sunset).ToLocalTime();
             }
 
             string json = JsonConvert.SerializeObject(root, Formatting.Indented);
