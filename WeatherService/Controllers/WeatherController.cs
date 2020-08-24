@@ -21,17 +21,12 @@ namespace WeatherService.Controllers
             _service = service;
         }
 
-
         [HttpGet("{cityName}")]
         public async Task<ActionResult<string>> GetWeather(string cityName)
         {
-            
             try
             {
-
                 var result = await _service.ShowWeatherDataAsync(cityName);
-                //var result = await showWeatherData.ShowDataAsync(cityName);
-
                 return result;
             }
             catch (Exception)

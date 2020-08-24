@@ -8,9 +8,6 @@ namespace WeatherApp.BusinessLogic.Services
 {
     public interface IWeatherService 
     {
-
-
         Task<string> ShowWeatherDataAsync(string CityName);
-
     }
 }

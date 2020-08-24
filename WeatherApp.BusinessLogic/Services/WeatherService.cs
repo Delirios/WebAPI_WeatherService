@@ -32,10 +32,8 @@ namespace WeatherApp.BusinessLogic.Services
                 using (Stream stream = webResponse.GetResponseStream())
                 {
                     StreamReader reader = new StreamReader(stream);
-
                     string responceFromServer = await reader.ReadToEndAsync();
                     Root result = JsonConvert.DeserializeObject<Root>(responceFromServer);
-                    //Bug here
                     try
                     {
                         using (_context)
@@ -44,18 +42,14 @@ namespace WeatherApp.BusinessLogic.Services
                             _context.SaveChanges();
                         }
                     }
-                    catch (Exception e)
+                    catch (Exception exception)
                     {
-                        Debug.WriteLine("asdsadasdaddsadassaaaaaaaaaaaaaaaaa");
-                        Debug.WriteLine(e);
-
+                        Debug.WriteLine(new string('-',50));
+                        Debug.WriteLine(exception);
                     }
-
-
                     return result;
                 }
         }
-
         public async Task<string> ShowWeatherDataAsync(string CityName)
         {
             string api_key = "d59f2794ce9666f810bad9ece5322791";  // your api_key from the http://api.openweathermap.org
@@ -73,12 +67,10 @@ namespace WeatherApp.BusinessLogic.Services
                 {
                     weatherDescription += item;
                 }
-
                 ConvertDateTime convertDateTime = new ConvertDateTime();
                 var sunriseTime = convertDateTime.ConvertFromUnixTimestamp(root.system.sunrise).ToLocalTime();
                 var sunsetTime = convertDateTime.ConvertFromUnixTimestamp(root.system.sunset).ToLocalTime();
             }
-
             string json = JsonConvert.SerializeObject(root, Formatting.Indented);
             return json;
         }
