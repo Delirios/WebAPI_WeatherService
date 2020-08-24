@@ -2,9 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>WeatherApp.BusinessLogic</AssemblyName>
+    <RootNamespace>WeatherApp.BusinessLogic</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WeatherApp.DataAccessLayer\WeatherApp.DataAccessLayer.csproj" />
     <ProjectReference Include="..\WeatherApp.Domain\WeatherApp.Domain.csproj" />
   </ItemGroup>
 

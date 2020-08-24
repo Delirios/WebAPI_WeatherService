@@ -5,11 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
+using WeatherApp.BusinessLogic;
+using WeatherApp.BusinessLogic.Services;
+using  WeatherApp.DataAccessLayer;
 namespace WeatherService
 {
     public class Startup
@@ -21,13 +24,16 @@ namespace WeatherService
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddTransient<IWeatherService, WeatherApp.BusinessLogic.Services.WeatherService>();
+            services.AddDbContext<WeatherContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("MyConnection"),
+                x => x.MigrationsAssembly("WeatherService"));
+        });
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
