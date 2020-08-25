@@ -50,7 +50,7 @@ namespace WeatherApp.BusinessLogic.Services
                     return result;
                 }
         }
-        public async Task<string> ShowWeatherDataAsync(string CityName)
+        public async Task<object> ShowWeatherDataAsync(string CityName)
         {
             string api_key = "d59f2794ce9666f810bad9ece5322791";  // your api_key from the http://api.openweathermap.org
             string units = "metric";
@@ -73,6 +73,7 @@ namespace WeatherApp.BusinessLogic.Services
             }
             string json = JsonConvert.SerializeObject(root, Formatting.Indented);
             return json;
+            //return root;
         }
     }
 }

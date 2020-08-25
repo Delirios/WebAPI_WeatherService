@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WeatherApp.BusinessLogic;
 using WeatherApp.BusinessLogic.Services;
+using WeatherApp.Domain;
 
 namespace WeatherService.Controllers
 {
@@ -21,15 +22,29 @@ namespace WeatherService.Controllers
             _service = service;
         }
 
+        //[HttpGet("{cityName}")]
+        //public async Task<ActionResult<string>> GetWeather(string cityName)
+        //{
+        //    try
+        //    {
+        //        var result = await _service.ShowWeatherDataAsync(cityName);
+        //        return result;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, "Server Failed");
+        //    }
+        //}
         [HttpGet("{cityName}")]
-        public async Task<ActionResult<string>> GetWeather(string cityName)
+        public async Task<ActionResult<Object>> GetWeather(string cityName)
         {
             try
             {
                 var result = await _service.ShowWeatherDataAsync(cityName);
+
                 return result;
             }
-            catch (Exception)
+            catch (Exception )
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Server Failed");
             }

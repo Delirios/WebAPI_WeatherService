@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Serialization;
 using WeatherApp.BusinessLogic;
 using WeatherApp.BusinessLogic.Services;
 using  WeatherApp.DataAccessLayer;
@@ -26,13 +27,18 @@ namespace WeatherService
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                });
             services.AddTransient<IWeatherService, WeatherApp.BusinessLogic.Services.WeatherService>();
             services.AddDbContext<WeatherContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("MyConnection"),
                 x => x.MigrationsAssembly("WeatherService"));
         });
+
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
