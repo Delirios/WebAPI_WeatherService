@@ -27,11 +27,8 @@ namespace WeatherService
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers()
-                .AddNewtonsoftJson(options =>
-                {
-                    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-                });
+            services.AddCors();
+            services.AddControllers();
             services.AddTransient<IWeatherService, WeatherApp.BusinessLogic.Services.WeatherService>();
             services.AddDbContext<WeatherContext>(options =>
             {
@@ -48,6 +45,8 @@ namespace WeatherService
             }
 
             app.UseRouting();
+
+            app.UseCors(builder => builder.AllowAnyOrigin());
 
             app.UseAuthorization();
 
