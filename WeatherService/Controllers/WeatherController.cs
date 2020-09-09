@@ -49,5 +49,20 @@ namespace WeatherService.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Server Failed");
             }
         }
+        [HttpGet("{lat}/{lon}")]
+        public async Task<ActionResult<Object>> GetWeatherByCoordinates(double lat, double lon)
+        {
+            try
+            {
+                var result = await _service.ShowWeatherDataByCoordinatesAsync(lat, lon);
+
+                return result;
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Server Failed");
+            }
+        }
+
     }
 }

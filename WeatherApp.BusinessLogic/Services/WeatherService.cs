@@ -15,8 +15,12 @@ using WeatherApp.Domain;
 
 namespace WeatherApp.BusinessLogic.Services
 {
+
     public class WeatherService : IWeatherService
     {
+        const string api_key = "d59f2794ce9666f810bad9ece5322791";
+        const string units = "metric";
+        const string lang = "ua";
 
         private readonly WeatherContext _context;
 
@@ -52,12 +56,24 @@ namespace WeatherApp.BusinessLogic.Services
         }
         public async Task<object> ShowWeatherDataAsync(string CityName)
         {
-            string api_key = "d59f2794ce9666f810bad9ece5322791";  // your api_key from the http://api.openweathermap.org
-            string units = "metric";
-            string lang = "ua";
             string url = "http://api.openweathermap.org/data/2.5/weather?q="
                          + CityName + "&appid=" + api_key + "&units=" + units + "&lang=" + lang;
 
+            object json = await GetJsonDataAsync(url);
+            return json;
+        }
+
+        public async Task<object> ShowWeatherDataByCoordinatesAsync(double lat, double lon)
+        {
+            string url = "http://api.openweathermap.org/data/2.5/weather?lat=" 
+                         + lat + "&lon="+ lon+ "&appid=" + api_key + "&units=" + units + "&lang=" + lang;
+
+            object json = await GetJsonDataAsync(url);
+            return json;
+        }
+
+        public async Task<object> GetJsonDataAsync(string url)
+        {
             Root root = new Root();
             {
                 root = await GetWeatherDataAsync(url);
@@ -73,7 +89,6 @@ namespace WeatherApp.BusinessLogic.Services
             }
             string json = JsonConvert.SerializeObject(root, Formatting.Indented);
             return json;
-            //return root;
         }
     }
 }

@@ -9,5 +9,6 @@ namespace WeatherApp.BusinessLogic.Services
     public interface IWeatherService 
     {
         Task<object> ShowWeatherDataAsync(string CityName);
+        Task<object> ShowWeatherDataByCoordinatesAsync(double lat, double lon);
     }
 }
