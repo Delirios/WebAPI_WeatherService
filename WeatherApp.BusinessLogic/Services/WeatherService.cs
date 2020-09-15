@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using WeatherApp.DataAccessLayer;
 using WeatherApp.Domain;
@@ -27,6 +22,10 @@ namespace WeatherApp.BusinessLogic.Services
         public WeatherService(WeatherContext context)
         {
             _context = context;
+        }
+
+        public WeatherService()
+        {
         }
 
         public async Task<Root> GetWeatherDataAsync(string url)
@@ -58,7 +57,6 @@ namespace WeatherApp.BusinessLogic.Services
         {
             string url = "http://api.openweathermap.org/data/2.5/weather?q="
                          + CityName + "&appid=" + api_key + "&units=" + units + "&lang=" + lang;
-
             object json = await GetJsonDataAsync(url);
             return json;
         }
@@ -83,9 +81,6 @@ namespace WeatherApp.BusinessLogic.Services
                 {
                     weatherDescription += item;
                 }
-                ConvertDateTime convertDateTime = new ConvertDateTime();
-                var sunriseTime = convertDateTime.ConvertFromUnixTimestamp(root.system.sunrise).ToLocalTime();
-                var sunsetTime = convertDateTime.ConvertFromUnixTimestamp(root.system.sunset).ToLocalTime();
             }
             string json = JsonConvert.SerializeObject(root, Formatting.Indented);
             return json;
