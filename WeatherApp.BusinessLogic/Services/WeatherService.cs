@@ -27,7 +27,6 @@ namespace WeatherApp.BusinessLogic.Services
         public WeatherService()
         {
         }
-
         public async Task<Root> GetWeatherDataAsync(string url)
         {
             WebRequest webRequest = WebRequest.Create(url);
@@ -53,24 +52,24 @@ namespace WeatherApp.BusinessLogic.Services
                     return result;
                 }
         }
-        public async Task<object> ShowWeatherDataAsync(string CityName)
+        public async Task<Root> ShowWeatherDataAsync(string CityName)
         {
             string url = "http://api.openweathermap.org/data/2.5/weather?q="
                          + CityName + "&appid=" + api_key + "&units=" + units + "&lang=" + lang;
-            object json = await GetJsonDataAsync(url);
-            return json;
+            var result = await GetJsonDataAsync(url);
+            return result;
         }
 
-        public async Task<object> ShowWeatherDataByCoordinatesAsync(double lat, double lon)
+        public async Task<Root> ShowWeatherDataByCoordinatesAsync(double lat, double lon)
         {
             string url = "http://api.openweathermap.org/data/2.5/weather?lat=" 
                          + lat + "&lon="+ lon+ "&appid=" + api_key + "&units=" + units + "&lang=" + lang;
 
-            object json = await GetJsonDataAsync(url);
-            return json;
+            var result = await GetJsonDataAsync(url);
+            return result;
         }
 
-        public async Task<object> GetJsonDataAsync(string url)
+        public async Task<Root> GetJsonDataAsync(string url)
         {
             Root root = new Root();
             {
@@ -82,8 +81,7 @@ namespace WeatherApp.BusinessLogic.Services
                     weatherDescription += item;
                 }
             }
-            string json = JsonConvert.SerializeObject(root, Formatting.Indented);
-            return json;
+            return root;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace WeatherApp.Domain
     public class Root
     {
         [Key]
-        public int Id { get; set; }
+        public int RootId { get; set; }
         [JsonProperty("id")]
         public int city_Id { get; set; }
 
