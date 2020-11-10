@@ -9,7 +9,7 @@ namespace WeatherApp.Domain
     public class Weather
     {
         [Key]
-        public int weather_Id { get; set; }
+        public int WeatherId { get; set; }
         [JsonProperty("id")]
         public int condition { get; set; }
         public string main { get; set; }

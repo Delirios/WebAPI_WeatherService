@@ -10,7 +10,7 @@ namespace WeatherApp.Domain
     public class System
     {
         [Key]
-        public int Id { get; set; }
+        public int SystemId { get; set; }
         [JsonProperty("id")]
         public int internal_parameter { get; set; }
         public int type { get; set; }
